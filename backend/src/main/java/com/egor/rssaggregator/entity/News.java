@@ -32,8 +32,8 @@ public class News {
 
     @ToString.Exclude
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "feed_id")
-    private Feed feed;
+    @JoinColumn(name = "source_id")
+    private Feed source;
 
     @Override
     public boolean equals(Object o) {
@@ -43,11 +43,11 @@ public class News {
         return Objects.equals(id, news.id) &&
                 Objects.equals(newsHead, news.newsHead) &&
                 Objects.equals(newsDate, news.newsDate) &&
-                Objects.equals(feed, news.feed);
+                Objects.equals(source, news.source);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, newsHead, newsDate, feed);
+        return Objects.hash(id, newsHead, newsDate, source);
     }
 }

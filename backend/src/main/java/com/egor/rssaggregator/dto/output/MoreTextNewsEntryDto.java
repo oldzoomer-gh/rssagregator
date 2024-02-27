@@ -1,6 +1,5 @@
 package com.egor.rssaggregator.dto.output;
 
-import com.egor.rssaggregator.entity.Feed;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -22,5 +21,5 @@ public class MoreTextNewsEntryDto {
     private String newsText;
 
     @NotNull
-    private Feed source;
+    private GetFeedDto source;
 }

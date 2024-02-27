@@ -31,6 +31,7 @@ public class User implements UserDetails {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     @ToString.Exclude
+    @Builder.Default
     private List<Feed> feeds = new ArrayList<>();
 
     @Override
