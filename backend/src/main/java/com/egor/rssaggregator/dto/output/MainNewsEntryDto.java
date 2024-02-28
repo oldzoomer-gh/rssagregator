@@ -18,6 +18,7 @@ public class MainNewsEntryDto {
     @NotNull
     private LocalDate newsDate;
 
-    @NotNull
-    private GetFeedDto source;
+    @NotBlank
+    @Size(max = 250)
+    private String feedUrl;
 }

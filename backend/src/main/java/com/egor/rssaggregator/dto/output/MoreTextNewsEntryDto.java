@@ -18,8 +18,10 @@ public class MoreTextNewsEntryDto {
     @NotNull
     private LocalDate newsDate;
 
+    @NotNull
     private String newsText;
 
-    @NotNull
-    private GetFeedDto source;
+    @NotBlank
+    @Size(max = 250)
+    private String feedUrl;
 }
