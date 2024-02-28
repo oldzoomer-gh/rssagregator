@@ -1,5 +1,5 @@
 # DB connection data
-spring.datasource.url=jdbc:postgresql://localhost:5432/tasks
+spring.datasource.url=jdbc:postgresql://localhost:5432/rssaggregator
 spring.datasource.username=user
 spring.datasource.password=qwerty
 
