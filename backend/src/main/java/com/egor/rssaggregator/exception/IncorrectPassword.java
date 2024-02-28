@@ -1,5 +1,9 @@
 package com.egor.rssaggregator.exception;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ResponseStatus;
+
+@ResponseStatus(value = HttpStatus.FORBIDDEN, reason = "Incorrect password!")
 public class IncorrectPassword extends Exception {
     public IncorrectPassword() {
         super();
