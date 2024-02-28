@@ -1,0 +1,11 @@
+# DB connection data
+spring.datasource.url=jdbc:postgresql://localhost:5432/tasks
+spring.datasource.username=user
+spring.datasource.password=qwerty
+
+# DB driver setup
+spring.datasource.driver-class-name=org.postgresql.Driver
+spring.jpa.database=postgresql
+
+# Custom Swagger-UI endpoint
+springdoc.swagger-ui.path=/api-docs.html
