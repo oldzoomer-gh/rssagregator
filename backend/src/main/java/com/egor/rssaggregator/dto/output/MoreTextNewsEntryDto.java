@@ -6,7 +6,7 @@ import jakarta.validation.constraints.Size;
 import lombok.Builder;
 import lombok.Data;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Data
 @Builder
@@ -16,7 +16,7 @@ public class MoreTextNewsEntryDto {
     private String newsHead;
 
     @NotNull
-    private LocalDate newsDate;
+    private LocalDateTime newsDate;
 
     @NotNull
     private String newsText;
