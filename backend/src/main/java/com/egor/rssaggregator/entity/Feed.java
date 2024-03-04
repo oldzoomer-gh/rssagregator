@@ -26,8 +26,9 @@ public class Feed {
     @Column(name = "url", unique = true, length = 250, nullable = false)
     private String url;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
+    @ToString.Exclude
     private User user;
 
     @Override
