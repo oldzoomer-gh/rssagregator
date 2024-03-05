@@ -38,15 +38,13 @@ class UserServiceImplTest {
 
     @Test
     void loginWithExistUser() throws UserNotFound, IncorrectPassword {
-        var loginDTO = LoginDto.builder()
-                .email("1@1.ru")
-                .password("test")
-                .build();
+        var loginDTO = new LoginDto();
+        loginDTO.setEmail("1@1.ru");
+        loginDTO.setPassword("test");
 
-        var user = User.builder()
-                .email(loginDTO.getEmail())
-                .password(passwordEncoder.encode(loginDTO.getPassword()))
-                .build();
+        var user = new User();
+        user.setEmail(loginDTO.getEmail());
+        user.setPassword(passwordEncoder.encode(loginDTO.getPassword()));
 
         when(userRepository.findByEmail("1@1.ru")).thenReturn(Optional.of(user));
 
@@ -55,15 +53,13 @@ class UserServiceImplTest {
 
     @Test
     void loginWithExistUserButWithIncorrectPassword() {
-        var loginDTO = LoginDto.builder()
-                .email("1@1.ru")
-                .password("test")
-                .build();
+        var loginDTO = new LoginDto();
+        loginDTO.setEmail("1@1.ru");
+        loginDTO.setPassword("test");
 
-        var user = User.builder()
-                .email(loginDTO.getEmail())
-                .password(passwordEncoder.encode("test2"))
-                .build();
+        var user = new User();
+        user.setEmail(loginDTO.getEmail());
+        user.setPassword(passwordEncoder.encode("test2"));
 
         when(userRepository.findByEmail("1@1.ru")).thenReturn(Optional.of(user));
 
@@ -72,19 +68,16 @@ class UserServiceImplTest {
 
     @Test
     void loginWithNotExistUser() {
-        var loginDTO = LoginDto.builder()
-                .email("test1")
-                .password("test")
-                .build();
+        var loginDTO = new LoginDto();
+        loginDTO.setEmail("1@1.ru");
 
         assertThrows(UserNotFound.class, () -> userService.login(loginDTO));
     }
 
     @Test
     void registrationWithDuplicatedUser() {
-        var userData = RegDto.builder()
-                .email("1@1.ru")
-                .build();
+        var userData = new RegDto();
+        userData.setEmail("1@1.ru");
 
         when(userRepository.existsByEmail(any())).thenReturn(true);
 
