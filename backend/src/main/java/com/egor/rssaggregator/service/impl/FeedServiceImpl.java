@@ -73,7 +73,7 @@ public class FeedServiceImpl implements FeedService {
         for (Feed feed : feeds) {
             String url = feed.getUrl();
 
-            var news = GetFeed.getFeed(url)
+            var news = new ArrayList<>(GetFeed.getFeed(url)
                     .getEntries()
                     .stream()
                     .map(entry -> {
@@ -89,7 +89,9 @@ public class FeedServiceImpl implements FeedService {
                                 .toLocalDateTime());
 
                         return mainNewsEntry;
-                    }).toList();
+                    }).toList());
+
+            news.sort((x, y) -> y.getNewsDate().compareTo(x.getNewsDate()));
 
             newsEntries.addAll(news);
         }
