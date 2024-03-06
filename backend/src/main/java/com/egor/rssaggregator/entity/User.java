@@ -30,7 +30,7 @@ public class User implements UserDetails {
     @ToString.Exclude
     private String password;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Feed> feeds = new ArrayList<>();
 
     @Override

@@ -3,7 +3,7 @@ package com.egor.rssaggregator.exception;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-@ResponseStatus(value = HttpStatus.FORBIDDEN, reason = "Incorrect password!")
+@ResponseStatus(value = HttpStatus.FORBIDDEN, reason = "Incorrect password!") // 403
 public class IncorrectPassword extends Exception {
     public IncorrectPassword() {
         super();

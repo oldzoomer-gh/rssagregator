@@ -5,6 +5,8 @@ import com.egor.rssaggregator.dto.output.GetFeedDto;
 import com.egor.rssaggregator.dto.output.MainNewsEntryDto;
 import com.egor.rssaggregator.entity.Feed;
 import com.egor.rssaggregator.entity.User;
+import com.egor.rssaggregator.exception.DuplicateFeed;
+import com.egor.rssaggregator.exception.IncorrectInputData;
 import com.egor.rssaggregator.exception.UserNotFound;
 import com.egor.rssaggregator.mapper.input.FeedInputMapper;
 import com.egor.rssaggregator.mapper.output.FeedOutputMapper;
@@ -31,11 +33,19 @@ public class FeedServiceImpl implements FeedService {
     private final UserRepo userRepo;
 
     @Override
-    public void addFeed(AddFeedDto addFeedDto, String email) throws UserNotFound {
+    public void addFeed(AddFeedDto addFeedDto, String email) throws UserNotFound, DuplicateFeed {
         Feed feed = feedInputMapper.toEntity(addFeedDto);
 
         User user = userRepo.findByEmail(email)
                 .orElseThrow(() -> new UserNotFound("User not found!"));
+
+        for (Feed f : user.getFeeds()) {
+            if (f.getUrl().equals(feed.getUrl()) || f.getName().equals(feed.getName())) {
+                throw new DuplicateFeed("Feed already exists!");
+            }
+        }
+
+        feed.setUser(user);
 
         user.getFeeds().add(feed);
 
@@ -61,9 +71,9 @@ public class FeedServiceImpl implements FeedService {
     }
 
     @Override
-    @Cacheable(value = "mainNews", key = "#email")
+    @Cacheable(value = "mainNews", key = "{#email, #pageable.pageNumber, #pageable.pageSize}")
     public Page<MainNewsEntryDto> getNewsHeadings(String email, Pageable pageable)
-            throws UserNotFound, ExecutionException, InterruptedException {
+            throws UserNotFound, ExecutionException, InterruptedException, IncorrectInputData {
         User user = userRepo.findByEmail(email)
                 .orElseThrow(() -> new UserNotFound("User not found!"));
         List<Feed> feeds = user.getFeeds();
@@ -91,12 +101,17 @@ public class FeedServiceImpl implements FeedService {
                         return mainNewsEntry;
                     }).toList());
 
-            news.sort((x, y) -> y.getNewsDate().compareTo(x.getNewsDate()));
-
             newsEntries.addAll(news);
         }
 
+        newsEntries.sort((x, y) -> y.getNewsDate().compareTo(x.getNewsDate()));
+
         int start = (int) pageable.getOffset();
+
+        if (start > newsEntries.size()) {
+            throw new IncorrectInputData("Incorrect page number!");
+        }
+
         int end = Math.min(start + pageable.getPageSize(), newsEntries.size());
         return new PageImpl<>(newsEntries.subList(start, end), pageable, newsEntries.size());
     }

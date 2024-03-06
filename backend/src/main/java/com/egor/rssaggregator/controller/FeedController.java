@@ -3,6 +3,8 @@ package com.egor.rssaggregator.controller;
 import com.egor.rssaggregator.dto.input.AddFeedDto;
 import com.egor.rssaggregator.dto.output.GetFeedDto;
 import com.egor.rssaggregator.dto.output.MainNewsEntryDto;
+import com.egor.rssaggregator.exception.DuplicateFeed;
+import com.egor.rssaggregator.exception.IncorrectInputData;
 import com.egor.rssaggregator.exception.UserNotFound;
 import com.egor.rssaggregator.service.FeedService;
 import lombok.AllArgsConstructor;
@@ -23,7 +25,7 @@ public class FeedController {
     @PostMapping("/add")
     public void addFeed(@RequestBody AddFeedDto dto,
                         Authentication authentication)
-            throws UserNotFound {
+            throws UserNotFound, DuplicateFeed {
         feedService.addFeed(dto, authentication.getName());
     }
 
@@ -44,7 +46,7 @@ public class FeedController {
     public Page<MainNewsEntryDto> getNews(Authentication authentication,
                                           @RequestParam(defaultValue = "0") int page,
                                           @RequestParam(defaultValue = "10") int size)
-            throws UserNotFound, ExecutionException, InterruptedException {
+            throws UserNotFound, ExecutionException, InterruptedException, IncorrectInputData {
         var pageable = PageRequest.of(page, size);
         return feedService.getNewsHeadings(authentication.getName(), pageable);
     }
