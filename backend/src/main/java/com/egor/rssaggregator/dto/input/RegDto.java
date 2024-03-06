@@ -7,12 +7,12 @@ import lombok.Data;
 
 @Data
 public class RegDto {
-    @NotBlank
-    @Email
-    @Size(max = 50)
+    @NotBlank(message = "Email can't be blank")
+    @Email(message = "Invalid email")
+    @Size(max = 50, message = "Email must be less than 50 characters")
     private String email;
 
-    @NotBlank
-    @Size(max = 32, min = 8)
+    @NotBlank(message = "Password can't be blank")
+    @Size(max = 32, min = 8, message = "Password must be between 8 and 32 characters")
     private String password;
 }
