@@ -22,6 +22,7 @@ public class RssaggregatorApplication {
 
 	@Bean
 	public CacheManager cacheManager() {
+		//noinspection NullableProblems
 		return new ConcurrentMapCacheManager() {
 			@Override
             protected Cache createConcurrentMapCache(String name) {
