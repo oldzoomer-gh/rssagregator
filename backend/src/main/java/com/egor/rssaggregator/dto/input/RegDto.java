@@ -13,6 +13,6 @@ public class RegDto {
     private String email;
 
     @NotBlank
-    @Size(max = 32)
+    @Size(max = 32, min = 8)
     private String password;
 }
