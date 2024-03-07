@@ -7,6 +7,7 @@ import com.egor.rssaggregator.service.FeedService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,6 +15,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/1.0/feed")
+@PreAuthorize("isAuthenticated()")
 @AllArgsConstructor
 public class FeedController {
     private final FeedService feedService;
