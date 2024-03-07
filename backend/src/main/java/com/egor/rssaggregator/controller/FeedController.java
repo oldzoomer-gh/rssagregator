@@ -26,7 +26,7 @@ public class FeedController {
         feedService.addFeed(dto, authentication.getName());
     }
 
-    @GetMapping("/listFeeds")
+    @GetMapping("/list")
     public List<GetFeedDto> listFeeds(Authentication authentication) {
         return feedService.getFeeds(authentication.getName());
     }
@@ -37,8 +37,8 @@ public class FeedController {
         feedService.deleteFeed(id, authentication.getName());
     }
 
-    @GetMapping("/getNews")
-    public Page<MainNewsEntryDto> getNews(Authentication authentication,
+    @GetMapping("/getNewsFromAllFeeds")
+    public Page<MainNewsEntryDto> getNewsFromAllFeeds(Authentication authentication,
                                           @RequestParam(defaultValue = "0") int page,
                                           @RequestParam(defaultValue = "10") int size) {
         var pageable = PageRequest.of(page, size);
