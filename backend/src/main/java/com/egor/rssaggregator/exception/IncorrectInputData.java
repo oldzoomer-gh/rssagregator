@@ -4,7 +4,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(value = HttpStatus.BAD_REQUEST, reason = "Incorrect input data")
-public class IncorrectInputData extends Exception {
+public class IncorrectInputData extends RuntimeException {
     public IncorrectInputData() {
         super();
     }

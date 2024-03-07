@@ -1,5 +1,6 @@
 package com.egor.rssaggregator.util;
 
+import com.egor.rssaggregator.exception.GetFeedException;
 import com.rometools.rome.feed.synd.SyndFeed;
 import com.rometools.rome.io.FeedException;
 import com.rometools.rome.io.SyndFeedInput;
@@ -27,11 +28,9 @@ public class GetFeed {
      * This method allows getting an RSS feed from URL.
      * @param feedUrl URL of feed
      * @return Feed representation
-     * @throws ExecutionException Execution problems
-     * @throws InterruptedException Method interruption
      * <p>
      */
-    public static SyndFeed getFeed(String feedUrl) throws ExecutionException, InterruptedException {
+    public static SyndFeed getFeed(String feedUrl) {
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder().uri(URI.create(feedUrl)).build();
         var feed = client
@@ -39,7 +38,11 @@ public class GetFeed {
                 .thenApply(HttpResponse::body)
                 .thenApply(GetFeed::bodyToFeed)
                 .orTimeout(5, SECONDS);
-        return feed.get();
+        try {
+            return feed.get();
+        } catch (InterruptedException | ExecutionException e) {
+            throw new GetFeedException("Can't get feed");
+        }
     }
 
     /**

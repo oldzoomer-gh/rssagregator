@@ -4,7 +4,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(value = HttpStatus.CONFLICT, reason = "Duplicate feed!") // 409
-public class DuplicateFeed extends Exception {
+public class DuplicateFeed extends RuntimeException {
     public DuplicateFeed() {
         super();
     }

@@ -23,7 +23,6 @@ import org.springframework.stereotype.Service;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 @Service
 @AllArgsConstructor
@@ -33,7 +32,7 @@ public class FeedServiceImpl implements FeedService {
     private final UserRepo userRepo;
 
     @Override
-    public void addFeed(AddFeedDto addFeedDto, String email) throws UserNotFound, DuplicateFeed {
+    public void addFeed(AddFeedDto addFeedDto, String email) {
         Feed feed = feedInputMapper.toEntity(addFeedDto);
 
         User user = userRepo.findByEmail(email)
@@ -53,7 +52,7 @@ public class FeedServiceImpl implements FeedService {
     }
 
     @Override
-    public List<GetFeedDto> getFeeds(String email) throws UserNotFound {
+    public List<GetFeedDto> getFeeds(String email) {
         User user = userRepo.findByEmail(email)
                 .orElseThrow(() -> new UserNotFound("User not found!"));
 
@@ -61,7 +60,7 @@ public class FeedServiceImpl implements FeedService {
     }
 
     @Override
-    public void deleteFeed(long id, String email) throws UserNotFound {
+    public void deleteFeed(long id, String email) {
         User user = userRepo.findByEmail(email)
                 .orElseThrow(() -> new UserNotFound("User not found!"));
 
@@ -72,8 +71,7 @@ public class FeedServiceImpl implements FeedService {
 
     @Override
     @Cacheable(value = "mainNews", key = "{#email, #pageable.pageNumber, #pageable.pageSize}")
-    public Page<MainNewsEntryDto> getNewsHeadings(String email, Pageable pageable)
-            throws UserNotFound, ExecutionException, InterruptedException, IncorrectInputData {
+    public Page<MainNewsEntryDto> getNewsHeadings(String email, Pageable pageable) {
         User user = userRepo.findByEmail(email)
                 .orElseThrow(() -> new UserNotFound("User not found!"));
         List<Feed> feeds = user.getFeeds();
