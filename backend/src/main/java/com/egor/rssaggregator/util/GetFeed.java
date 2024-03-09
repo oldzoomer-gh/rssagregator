@@ -28,7 +28,6 @@ public class GetFeed {
      * This method allows getting an RSS feed from URL.
      * @param feedUrl URL of feed
      * @return Feed representation
-     * <p>
      */
     public static SyndFeed getFeed(String feedUrl) {
         HttpClient client = HttpClient.newHttpClient();
