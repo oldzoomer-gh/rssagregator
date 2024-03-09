@@ -2,10 +2,12 @@ package com.egor.rssaggregator.dto.input;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.validator.constraints.URL;
 
-@Data
+@Getter
+@Setter
 public class AddFeedDto {
     @NotBlank(message = "Name is required")
     @Size(max = 50, message = "Name must be less than 50 characters")
