@@ -9,6 +9,7 @@ import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cache.concurrent.ConcurrentMapCache;
 import org.springframework.cache.concurrent.ConcurrentMapCacheManager;
 import org.springframework.context.annotation.Bean;
+import org.springframework.lang.NonNull;
 
 import java.util.concurrent.TimeUnit;
 
@@ -22,10 +23,10 @@ public class RssaggregatorApplication {
 
 	@Bean
 	public CacheManager cacheManager() {
-		//noinspection NullableProblems
 		return new ConcurrentMapCacheManager() {
 			@Override
-            protected Cache createConcurrentMapCache(String name) {
+			@NonNull
+            protected Cache createConcurrentMapCache(@NonNull String name) {
 				return new ConcurrentMapCache(
 						name,
 						CacheBuilder.newBuilder()

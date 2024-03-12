@@ -29,7 +29,7 @@ public interface FeedService {
 
     /**
      * Delete feed.
-     * @param id Id of feed.
+     * @param id ID of feed.
      * @param email Email of user who deleted feed.
      */
     void deleteFeed(long id, String email);
