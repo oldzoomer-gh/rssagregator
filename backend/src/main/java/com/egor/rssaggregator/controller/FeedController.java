@@ -4,6 +4,7 @@ import com.egor.rssaggregator.dto.input.AddFeedDto;
 import com.egor.rssaggregator.dto.output.GetFeedDto;
 import com.egor.rssaggregator.dto.output.MainNewsEntryDto;
 import com.egor.rssaggregator.service.FeedService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -21,7 +22,7 @@ public class FeedController {
     private final FeedService feedService;
 
     @PostMapping("/add")
-    public void addFeed(@RequestBody AddFeedDto dto,
+    public void addFeed(@RequestBody @Valid AddFeedDto dto,
                         Authentication authentication) {
         feedService.addFeed(dto, authentication.getName());
     }

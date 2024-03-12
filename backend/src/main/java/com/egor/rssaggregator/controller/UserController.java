@@ -4,6 +4,7 @@ import com.egor.rssaggregator.dto.input.LoginDto;
 import com.egor.rssaggregator.dto.input.RegDto;
 import com.egor.rssaggregator.dto.output.TokenDto;
 import com.egor.rssaggregator.service.UserService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,12 +18,12 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/login")
-    public TokenDto login(@RequestBody LoginDto loginDto) {
+    public TokenDto login(@RequestBody @Valid LoginDto loginDto) {
         return userService.login(loginDto);
     }
 
     @PostMapping("/reg")
-    public void reg(@RequestBody RegDto regDto) {
+    public void reg(@RequestBody @Valid RegDto regDto) {
         userService.reg(regDto);
     }
 }
