@@ -2,7 +2,7 @@ package com.egor.rssaggregator.controller;
 
 import com.egor.rssaggregator.dto.input.AddFeedDto;
 import com.egor.rssaggregator.dto.output.GetFeedDto;
-import com.egor.rssaggregator.dto.output.MainNewsEntryDto;
+import com.egor.rssaggregator.dto.output.NewsEntryDto;
 import com.egor.rssaggregator.service.FeedService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -39,9 +39,9 @@ public class FeedController {
     }
 
     @GetMapping("/getNewsFromAllFeeds")
-    public Page<MainNewsEntryDto> getNewsFromAllFeeds(Authentication authentication,
-                                          @RequestParam(defaultValue = "0") int page,
-                                          @RequestParam(defaultValue = "10") int size) {
+    public Page<NewsEntryDto> getNewsFromAllFeeds(Authentication authentication,
+                                                  @RequestParam(defaultValue = "0") int page,
+                                                  @RequestParam(defaultValue = "10") int size) {
         var pageable = PageRequest.of(page, size);
         return feedService.getNewsHeadings(authentication.getName(), pageable);
     }

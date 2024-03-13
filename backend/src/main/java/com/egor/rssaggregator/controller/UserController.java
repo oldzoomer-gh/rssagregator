@@ -1,7 +1,6 @@
 package com.egor.rssaggregator.controller;
 
-import com.egor.rssaggregator.dto.input.LoginDto;
-import com.egor.rssaggregator.dto.input.RegDto;
+import com.egor.rssaggregator.dto.input.UserDto;
 import com.egor.rssaggregator.dto.output.TokenDto;
 import com.egor.rssaggregator.service.UserService;
 import jakarta.validation.Valid;
@@ -18,12 +17,12 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/login")
-    public TokenDto login(@RequestBody @Valid LoginDto loginDto) {
-        return userService.login(loginDto);
+    public TokenDto login(@RequestBody @Valid UserDto userDto) {
+        return userService.login(userDto);
     }
 
     @PostMapping("/reg")
-    public void reg(@RequestBody @Valid RegDto regDto) {
-        userService.reg(regDto);
+    public void reg(@RequestBody @Valid UserDto userDto) {
+        userService.reg(userDto);
     }
 }

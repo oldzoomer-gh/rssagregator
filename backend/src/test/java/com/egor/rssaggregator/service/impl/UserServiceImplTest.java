@@ -1,7 +1,6 @@
 package com.egor.rssaggregator.service.impl;
 
-import com.egor.rssaggregator.dto.input.LoginDto;
-import com.egor.rssaggregator.dto.input.RegDto;
+import com.egor.rssaggregator.dto.input.UserDto;
 import com.egor.rssaggregator.entity.User;
 import com.egor.rssaggregator.exception.DuplicateUser;
 import com.egor.rssaggregator.exception.IncorrectPassword;
@@ -38,45 +37,45 @@ class UserServiceImplTest {
 
     @Test
     void loginWithExistUser() throws UserNotFound, IncorrectPassword {
-        var loginDTO = new LoginDto();
-        loginDTO.setEmail("1@1.ru");
-        loginDTO.setPassword("test");
+        var userDto = new UserDto();
+        userDto.setEmail("1@1.ru");
+        userDto.setPassword("test");
 
         var user = new User();
-        user.setEmail(loginDTO.getEmail());
-        user.setPassword(passwordEncoder.encode(loginDTO.getPassword()));
+        user.setEmail(userDto.getEmail());
+        user.setPassword(passwordEncoder.encode(userDto.getPassword()));
 
         when(userRepository.findByEmail("1@1.ru")).thenReturn(Optional.of(user));
 
-        userService.login(loginDTO);
+        userService.login(userDto);
     }
 
     @Test
     void loginWithExistUserButWithIncorrectPassword() {
-        var loginDTO = new LoginDto();
-        loginDTO.setEmail("1@1.ru");
-        loginDTO.setPassword("test");
+        var userDto = new UserDto();
+        userDto.setEmail("1@1.ru");
+        userDto.setPassword("test");
 
         var user = new User();
-        user.setEmail(loginDTO.getEmail());
+        user.setEmail(userDto.getEmail());
         user.setPassword(passwordEncoder.encode("test2"));
 
         when(userRepository.findByEmail("1@1.ru")).thenReturn(Optional.of(user));
 
-        assertThrows(IncorrectPassword.class, () -> userService.login(loginDTO));
+        assertThrows(IncorrectPassword.class, () -> userService.login(userDto));
     }
 
     @Test
     void loginWithNotExistUser() {
-        var loginDTO = new LoginDto();
-        loginDTO.setEmail("1@1.ru");
+        var userDto = new UserDto();
+        userDto.setEmail("1@1.ru");
 
-        assertThrows(UserNotFound.class, () -> userService.login(loginDTO));
+        assertThrows(UserNotFound.class, () -> userService.login(userDto));
     }
 
     @Test
     void registrationWithDuplicatedUser() {
-        var userData = new RegDto();
+        var userData = new UserDto();
         userData.setEmail("1@1.ru");
 
         when(userRepository.existsByEmail(any())).thenReturn(true);

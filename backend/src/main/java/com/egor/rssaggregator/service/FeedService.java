@@ -2,7 +2,7 @@ package com.egor.rssaggregator.service;
 
 import com.egor.rssaggregator.dto.input.AddFeedDto;
 import com.egor.rssaggregator.dto.output.GetFeedDto;
-import com.egor.rssaggregator.dto.output.MainNewsEntryDto;
+import com.egor.rssaggregator.dto.output.NewsEntryDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -40,5 +40,5 @@ public interface FeedService {
      * @param pageable Pageable object.
      * @return List of news headings.
      */
-    Page<MainNewsEntryDto> getNewsHeadings(String email, Pageable pageable);
+    Page<NewsEntryDto> getNewsHeadings(String email, Pageable pageable);
 }

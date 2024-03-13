@@ -1,7 +1,6 @@
 package com.egor.rssaggregator.service;
 
-import com.egor.rssaggregator.dto.input.LoginDto;
-import com.egor.rssaggregator.dto.input.RegDto;
+import com.egor.rssaggregator.dto.input.UserDto;
 import com.egor.rssaggregator.dto.output.TokenDto;
 
 /**
@@ -12,14 +11,14 @@ public interface UserService {
 
     /**
      * Login user and return JWT Bearer token.
-     * @param loginDto Login data
+     * @param userDto Login data
      * @return JWT Bearer token
      */
-    TokenDto login(LoginDto loginDto);
+    TokenDto login(UserDto userDto);
 
     /**
      * Register new user.
-     * @param regDto Registration data
+     * @param userDto Registration data
      */
-    void reg(RegDto regDto);
+    void reg(UserDto userDto);
 }

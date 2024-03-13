@@ -2,7 +2,7 @@ package com.egor.rssaggregator.service.impl;
 
 import com.egor.rssaggregator.dto.input.AddFeedDto;
 import com.egor.rssaggregator.dto.output.GetFeedDto;
-import com.egor.rssaggregator.dto.output.MainNewsEntryDto;
+import com.egor.rssaggregator.dto.output.NewsEntryDto;
 import com.egor.rssaggregator.entity.Feed;
 import com.egor.rssaggregator.entity.User;
 import com.egor.rssaggregator.exception.DuplicateFeed;
@@ -71,12 +71,12 @@ public class FeedServiceImpl implements FeedService {
 
     @Override
     @Cacheable(value = "mainNews", key = "{#email, #pageable.pageNumber, #pageable.pageSize}")
-    public Page<MainNewsEntryDto> getNewsHeadings(String email, Pageable pageable) {
+    public Page<NewsEntryDto> getNewsHeadings(String email, Pageable pageable) {
         User user = userRepo.findByEmail(email)
                 .orElseThrow(() -> new UserNotFound("User not found!"));
         List<Feed> feeds = user.getFeeds();
 
-        var newsEntries = new ArrayList<MainNewsEntryDto>();
+        var newsEntries = new ArrayList<NewsEntryDto>();
 
         for (Feed feed : feeds) {
             String url = feed.getUrl();
@@ -89,7 +89,7 @@ public class FeedServiceImpl implements FeedService {
                         var link = entry.getLink();
                         var date = entry.getPublishedDate();
 
-                        var mainNewsEntry = new MainNewsEntryDto();
+                        var mainNewsEntry = new NewsEntryDto();
                         mainNewsEntry.setNewsHead(title);
                         mainNewsEntry.setFeedUrl(link);
                         mainNewsEntry.setNewsDate(date.toInstant().

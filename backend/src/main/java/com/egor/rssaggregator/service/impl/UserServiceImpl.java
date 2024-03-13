@@ -1,7 +1,6 @@
 package com.egor.rssaggregator.service.impl;
 
-import com.egor.rssaggregator.dto.input.LoginDto;
-import com.egor.rssaggregator.dto.input.RegDto;
+import com.egor.rssaggregator.dto.input.UserDto;
 import com.egor.rssaggregator.dto.output.TokenDto;
 import com.egor.rssaggregator.entity.User;
 import com.egor.rssaggregator.exception.DuplicateUser;
@@ -24,9 +23,9 @@ public class UserServiceImpl implements UserService {
     private final BCryptPasswordEncoder passwordEncoder;
 
     @Override
-    public TokenDto login(LoginDto loginDto) {
-        String email = loginDto.getEmail();
-        String password = loginDto.getPassword();
+    public TokenDto login(UserDto userDto) {
+        String email = userDto.getEmail();
+        String password = userDto.getPassword();
 
         User user = userRepository.findByEmail(email).orElseThrow(() -> new UserNotFound("User not found."));
 
@@ -40,15 +39,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void reg(RegDto regDto) {
+    public void reg(UserDto userDto) {
         boolean emailIsExist =
-                userRepository.existsByEmail(regDto.getEmail());
+                userRepository.existsByEmail(userDto.getEmail());
 
         if (emailIsExist) {
             throw new DuplicateUser("Duplicate E-Mail.");
         }
 
-        User user = registrationDataInputMapper.toEntity(regDto);
+        User user = registrationDataInputMapper.toEntity(userDto);
         userRepository.save(user);
     }
 }

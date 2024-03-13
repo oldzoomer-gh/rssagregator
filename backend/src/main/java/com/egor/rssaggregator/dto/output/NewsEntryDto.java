@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 
 @Getter
 @Setter
-public class MainNewsEntryDto {
+public class NewsEntryDto {
     private String newsHead;
 
     private LocalDateTime newsDate;
