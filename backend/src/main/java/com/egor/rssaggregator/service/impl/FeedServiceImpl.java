@@ -4,9 +4,9 @@ import com.egor.rssaggregator.dto.FeedDto;
 import com.egor.rssaggregator.dto.NewsEntryDto;
 import com.egor.rssaggregator.entity.Feed;
 import com.egor.rssaggregator.entity.User;
-import com.egor.rssaggregator.exception.DuplicateFeed;
-import com.egor.rssaggregator.exception.IncorrectInputData;
-import com.egor.rssaggregator.exception.UserNotFound;
+import com.egor.rssaggregator.exception.DuplicateFeedException;
+import com.egor.rssaggregator.exception.IncorrectInputDataException;
+import com.egor.rssaggregator.exception.UserNotFoundException;
 import com.egor.rssaggregator.mapper.FeedMapper;
 import com.egor.rssaggregator.repo.UserRepo;
 import com.egor.rssaggregator.service.FeedService;
@@ -33,11 +33,11 @@ public class FeedServiceImpl implements FeedService {
         Feed feed = feedMapper.map(feedDto);
 
         User user = userRepo.findByEmail(email)
-                .orElseThrow(() -> new UserNotFound("User not found!"));
+                .orElseThrow(() -> new UserNotFoundException("User not found!"));
 
         for (Feed f : user.getFeeds()) {
             if (f.getUrl().equals(feed.getUrl()) || f.getName().equals(feed.getName())) {
-                throw new DuplicateFeed("Feed already exists!");
+                throw new DuplicateFeedException("Feed already exists!");
             }
         }
 
@@ -51,7 +51,7 @@ public class FeedServiceImpl implements FeedService {
     @Override
     public List<FeedDto> getFeeds(String email) {
         User user = userRepo.findByEmail(email)
-                .orElseThrow(() -> new UserNotFound("User not found!"));
+                .orElseThrow(() -> new UserNotFoundException("User not found!"));
 
         return feedMapper.mapToList(user.getFeeds());
     }
@@ -59,7 +59,7 @@ public class FeedServiceImpl implements FeedService {
     @Override
     public void deleteFeed(long id, String email) {
         User user = userRepo.findByEmail(email)
-                .orElseThrow(() -> new UserNotFound("User not found!"));
+                .orElseThrow(() -> new UserNotFoundException("User not found!"));
 
         user.getFeeds().removeIf(feed -> feed.getId() == id);
 
@@ -70,7 +70,7 @@ public class FeedServiceImpl implements FeedService {
     @Cacheable(value = "mainNews", key = "{#email, #pageable.pageNumber, #pageable.pageSize}")
     public Page<NewsEntryDto> getNewsHeadings(String email, Pageable pageable) {
         User user = userRepo.findByEmail(email)
-                .orElseThrow(() -> new UserNotFound("User not found!"));
+                .orElseThrow(() -> new UserNotFoundException("User not found!"));
         List<Feed> feeds = user.getFeeds();
 
         var newsEntries = new ArrayList<NewsEntryDto>();
@@ -104,7 +104,7 @@ public class FeedServiceImpl implements FeedService {
         int start = (int) pageable.getOffset();
 
         if (start > newsEntries.size()) {
-            throw new IncorrectInputData("Incorrect page number!");
+            throw new IncorrectInputDataException("Incorrect page number!");
         }
 
         int end = Math.min(start + pageable.getPageSize(), newsEntries.size());

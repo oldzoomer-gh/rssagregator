@@ -2,9 +2,9 @@ package com.egor.rssaggregator.service.impl;
 
 import com.egor.rssaggregator.dto.UserDto;
 import com.egor.rssaggregator.entity.User;
-import com.egor.rssaggregator.exception.DuplicateUser;
-import com.egor.rssaggregator.exception.IncorrectPassword;
-import com.egor.rssaggregator.exception.UserNotFound;
+import com.egor.rssaggregator.exception.DuplicateUserException;
+import com.egor.rssaggregator.exception.IncorrectPasswordException;
+import com.egor.rssaggregator.exception.UserNotFoundException;
 import com.egor.rssaggregator.repo.UserRepo;
 import com.egor.rssaggregator.security.JwtUtilities;
 import org.junit.jupiter.api.Test;
@@ -36,7 +36,7 @@ class UserServiceImplTest {
     private UserServiceImpl userService;
 
     @Test
-    void loginWithExistUser() throws UserNotFound, IncorrectPassword {
+    void loginWithExistUser() throws UserNotFoundException, IncorrectPasswordException {
         var userDto = new UserDto();
         userDto.setEmail("1@1.ru");
         userDto.setPassword("test");
@@ -62,7 +62,7 @@ class UserServiceImplTest {
 
         when(userRepository.findByEmail("1@1.ru")).thenReturn(Optional.of(user));
 
-        assertThrows(IncorrectPassword.class, () -> userService.login(userDto));
+        assertThrows(IncorrectPasswordException.class, () -> userService.login(userDto));
     }
 
     @Test
@@ -70,7 +70,7 @@ class UserServiceImplTest {
         var userDto = new UserDto();
         userDto.setEmail("1@1.ru");
 
-        assertThrows(UserNotFound.class, () -> userService.login(userDto));
+        assertThrows(UserNotFoundException.class, () -> userService.login(userDto));
     }
 
     @Test
@@ -80,6 +80,6 @@ class UserServiceImplTest {
 
         when(userRepository.existsByEmail(any())).thenReturn(true);
 
-        assertThrows(DuplicateUser.class, () -> userService.reg(userData));
+        assertThrows(DuplicateUserException.class, () -> userService.reg(userData));
     }
 }

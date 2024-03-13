@@ -4,24 +4,24 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(value = HttpStatus.FORBIDDEN, reason = "User not found!") // 403
-public class UserNotFound extends RuntimeException {
-    public UserNotFound() {
+public class UserNotFoundException extends RuntimeException {
+    public UserNotFoundException() {
         super();
     }
 
-    public UserNotFound(String message) {
+    public UserNotFoundException(String message) {
         super(message);
     }
 
-    public UserNotFound(String message, Throwable cause) {
+    public UserNotFoundException(String message, Throwable cause) {
         super(message, cause);
     }
 
-    public UserNotFound(Throwable cause) {
+    public UserNotFoundException(Throwable cause) {
         super(cause);
     }
 
-    protected UserNotFound(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
+    protected UserNotFoundException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
         super(message, cause, enableSuppression, writableStackTrace);
     }
 }

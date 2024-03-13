@@ -3,9 +3,9 @@ package com.egor.rssaggregator.service.impl;
 import com.egor.rssaggregator.dto.TokenDto;
 import com.egor.rssaggregator.dto.UserDto;
 import com.egor.rssaggregator.entity.User;
-import com.egor.rssaggregator.exception.DuplicateUser;
-import com.egor.rssaggregator.exception.IncorrectPassword;
-import com.egor.rssaggregator.exception.UserNotFound;
+import com.egor.rssaggregator.exception.DuplicateUserException;
+import com.egor.rssaggregator.exception.IncorrectPasswordException;
+import com.egor.rssaggregator.exception.UserNotFoundException;
 import com.egor.rssaggregator.mapper.UserMapper;
 import com.egor.rssaggregator.repo.UserRepo;
 import com.egor.rssaggregator.security.JwtUtilities;
@@ -27,10 +27,10 @@ public class UserServiceImpl implements UserService {
         String email = userDto.getEmail();
         String password = userDto.getPassword();
 
-        User user = userRepository.findByEmail(email).orElseThrow(() -> new UserNotFound("User not found."));
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new UserNotFoundException("User not found."));
 
         if (!passwordEncoder.matches(password, user.getPassword())) {
-            throw new IncorrectPassword("Incorrect password!");
+            throw new IncorrectPasswordException("Incorrect password!");
         }
 
         TokenDto tokenDto = new TokenDto();
@@ -44,7 +44,7 @@ public class UserServiceImpl implements UserService {
                 userRepository.existsByEmail(userDto.getEmail());
 
         if (emailIsExist) {
-            throw new DuplicateUser("Duplicate E-Mail.");
+            throw new DuplicateUserException("Duplicate E-Mail.");
         }
 
         User user = registrationDataInputMapper.toEntity(userDto);

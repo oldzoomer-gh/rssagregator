@@ -4,24 +4,24 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(value = HttpStatus.FORBIDDEN, reason = "Incorrect password!") // 403
-public class IncorrectPassword extends RuntimeException {
-    public IncorrectPassword() {
+public class IncorrectPasswordException extends RuntimeException {
+    public IncorrectPasswordException() {
         super();
     }
 
-    public IncorrectPassword(String message) {
+    public IncorrectPasswordException(String message) {
         super(message);
     }
 
-    public IncorrectPassword(String message, Throwable cause) {
+    public IncorrectPasswordException(String message, Throwable cause) {
         super(message, cause);
     }
 
-    public IncorrectPassword(Throwable cause) {
+    public IncorrectPasswordException(Throwable cause) {
         super(cause);
     }
 
-    protected IncorrectPassword(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
+    protected IncorrectPasswordException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
         super(message, cause, enableSuppression, writableStackTrace);
     }
 }
