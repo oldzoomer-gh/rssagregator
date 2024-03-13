@@ -1,7 +1,7 @@
 package com.egor.rssaggregator.service;
 
-import com.egor.rssaggregator.dto.input.UserDto;
-import com.egor.rssaggregator.dto.output.TokenDto;
+import com.egor.rssaggregator.dto.TokenDto;
+import com.egor.rssaggregator.dto.UserDto;
 
 /**
  * User management service layer. User can login and register.

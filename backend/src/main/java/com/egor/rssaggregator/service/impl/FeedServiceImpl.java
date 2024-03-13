@@ -1,15 +1,13 @@
 package com.egor.rssaggregator.service.impl;
 
-import com.egor.rssaggregator.dto.input.AddFeedDto;
-import com.egor.rssaggregator.dto.output.GetFeedDto;
-import com.egor.rssaggregator.dto.output.NewsEntryDto;
+import com.egor.rssaggregator.dto.FeedDto;
+import com.egor.rssaggregator.dto.NewsEntryDto;
 import com.egor.rssaggregator.entity.Feed;
 import com.egor.rssaggregator.entity.User;
 import com.egor.rssaggregator.exception.DuplicateFeed;
 import com.egor.rssaggregator.exception.IncorrectInputData;
 import com.egor.rssaggregator.exception.UserNotFound;
-import com.egor.rssaggregator.mapper.input.FeedInputMapper;
-import com.egor.rssaggregator.mapper.output.FeedOutputMapper;
+import com.egor.rssaggregator.mapper.FeedMapper;
 import com.egor.rssaggregator.repo.UserRepo;
 import com.egor.rssaggregator.service.FeedService;
 import com.egor.rssaggregator.util.GetFeed;
@@ -27,13 +25,12 @@ import java.util.List;
 @Service
 @AllArgsConstructor
 public class FeedServiceImpl implements FeedService {
-    private final FeedInputMapper feedInputMapper;
-    private final FeedOutputMapper feedOutputMapper;
+    private final FeedMapper feedMapper;
     private final UserRepo userRepo;
 
     @Override
-    public void addFeed(AddFeedDto addFeedDto, String email) {
-        Feed feed = feedInputMapper.toEntity(addFeedDto);
+    public void addFeed(FeedDto feedDto, String email) {
+        Feed feed = feedMapper.map(feedDto);
 
         User user = userRepo.findByEmail(email)
                 .orElseThrow(() -> new UserNotFound("User not found!"));
@@ -52,11 +49,11 @@ public class FeedServiceImpl implements FeedService {
     }
 
     @Override
-    public List<GetFeedDto> getFeeds(String email) {
+    public List<FeedDto> getFeeds(String email) {
         User user = userRepo.findByEmail(email)
                 .orElseThrow(() -> new UserNotFound("User not found!"));
 
-        return feedOutputMapper.toDto(user.getFeeds());
+        return feedMapper.mapToList(user.getFeeds());
     }
 
     @Override

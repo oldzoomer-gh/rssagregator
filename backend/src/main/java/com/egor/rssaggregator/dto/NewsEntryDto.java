@@ -1,4 +1,4 @@
-package com.egor.rssaggregator.dto.output;
+package com.egor.rssaggregator.dto;
 
 import lombok.Getter;
 import lombok.Setter;

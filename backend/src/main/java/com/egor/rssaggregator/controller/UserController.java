@@ -1,7 +1,7 @@
 package com.egor.rssaggregator.controller;
 
-import com.egor.rssaggregator.dto.input.UserDto;
-import com.egor.rssaggregator.dto.output.TokenDto;
+import com.egor.rssaggregator.dto.TokenDto;
+import com.egor.rssaggregator.dto.UserDto;
 import com.egor.rssaggregator.service.UserService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;

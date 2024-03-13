@@ -1,6 +1,6 @@
 package com.egor.rssaggregator.service.impl;
 
-import com.egor.rssaggregator.dto.input.UserDto;
+import com.egor.rssaggregator.dto.UserDto;
 import com.egor.rssaggregator.entity.User;
 import com.egor.rssaggregator.exception.DuplicateUser;
 import com.egor.rssaggregator.exception.IncorrectPassword;

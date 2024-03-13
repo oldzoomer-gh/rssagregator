@@ -1,12 +1,12 @@
 package com.egor.rssaggregator.service.impl;
 
-import com.egor.rssaggregator.dto.input.UserDto;
-import com.egor.rssaggregator.dto.output.TokenDto;
+import com.egor.rssaggregator.dto.TokenDto;
+import com.egor.rssaggregator.dto.UserDto;
 import com.egor.rssaggregator.entity.User;
 import com.egor.rssaggregator.exception.DuplicateUser;
 import com.egor.rssaggregator.exception.IncorrectPassword;
 import com.egor.rssaggregator.exception.UserNotFound;
-import com.egor.rssaggregator.mapper.input.RegDataInputMapper;
+import com.egor.rssaggregator.mapper.UserMapper;
 import com.egor.rssaggregator.repo.UserRepo;
 import com.egor.rssaggregator.security.JwtUtilities;
 import com.egor.rssaggregator.service.UserService;
@@ -19,7 +19,7 @@ import org.springframework.stereotype.Service;
 public class UserServiceImpl implements UserService {
     private final JwtUtilities jwtUtilities;
     private final UserRepo userRepository;
-    private final RegDataInputMapper registrationDataInputMapper;
+    private final UserMapper registrationDataInputMapper;
     private final BCryptPasswordEncoder passwordEncoder;
 
     @Override
