@@ -64,11 +64,11 @@ public class User implements UserDetails {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof User user)) return false;
-        return Objects.equals(id, user.id) && Objects.equals(email, user.email);
+        return Objects.equals(id, user.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, email);
+        return Objects.hash(id);
     }
 }

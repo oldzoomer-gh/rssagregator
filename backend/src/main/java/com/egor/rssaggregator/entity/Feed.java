@@ -30,11 +30,11 @@ public class Feed {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Feed feed)) return false;
-        return Objects.equals(id, feed.id) && Objects.equals(url, feed.url);
+        return Objects.equals(id, feed.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, url);
+        return Objects.hash(id);
     }
 }
