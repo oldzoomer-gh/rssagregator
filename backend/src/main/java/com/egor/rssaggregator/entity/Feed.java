@@ -22,7 +22,7 @@ public class Feed {
     @Column(name = "url", unique = true, length = 250, nullable = false)
     private String url;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 

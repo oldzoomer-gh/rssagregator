@@ -8,6 +8,7 @@ import com.egor.rssaggregator.exception.DuplicateFeedException;
 import com.egor.rssaggregator.exception.IncorrectInputDataException;
 import com.egor.rssaggregator.exception.UserNotFoundException;
 import com.egor.rssaggregator.mapper.FeedMapper;
+import com.egor.rssaggregator.repo.FeedRepo;
 import com.egor.rssaggregator.repo.UserRepo;
 import com.egor.rssaggregator.service.FeedService;
 import com.egor.rssaggregator.util.GetFeed;
@@ -27,25 +28,21 @@ import java.util.List;
 public class FeedServiceImpl implements FeedService {
     private final FeedMapper feedMapper;
     private final UserRepo userRepo;
+    private final FeedRepo feedRepo;
 
     @Override
     public void addFeed(FeedDto feedDto, String email) {
-        Feed feed = feedMapper.map(feedDto);
-
         User user = userRepo.findByEmail(email)
                 .orElseThrow(() -> new UserNotFoundException("User not found!"));
 
-        for (Feed f : user.getFeeds()) {
-            if (f.getUrl().equals(feed.getUrl()) || f.getName().equals(feed.getName())) {
-                throw new DuplicateFeedException("Feed already exists!");
-            }
+        if (user.getFeeds().stream().anyMatch(f ->
+                f.getUrl().equals(feedDto.getUrl()) || f.getName().equals(feedDto.getName()))) {
+            throw new DuplicateFeedException("Feed already exists!");
         }
 
+        Feed feed = feedMapper.map(feedDto);
         feed.setUser(user);
-
-        user.getFeeds().add(feed);
-
-        userRepo.save(user);
+        feedRepo.save(feed);
     }
 
     @Override
