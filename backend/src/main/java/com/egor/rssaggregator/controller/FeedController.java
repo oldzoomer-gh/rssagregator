@@ -40,7 +40,7 @@ public class FeedController {
     }
 
     @GetMapping("/list")
-    @Operation(summary = "Add new feed",
+    @Operation(summary = "List of feeds",
             responses = {
                     @ApiResponse(description = "List of feeds is returned",
                             responseCode = "200"),
@@ -52,7 +52,7 @@ public class FeedController {
     }
 
     @DeleteMapping("/delete/{id}")
-    @Operation(summary = "Add new feed",
+    @Operation(summary = "Delete feed",
             responses = {
                     @ApiResponse(description = "Feed is deleted",
                             responseCode = "200"),
@@ -65,10 +65,10 @@ public class FeedController {
         feedService.deleteFeed(id, authentication.getName());
     }
 
-    @GetMapping("/getNewsFromAllFeeds")
-    @Operation(summary = "Add new feed",
+    @GetMapping("/headlines")
+    @Operation(summary = "News headlines",
             responses = {
-                    @ApiResponse(description = "The list of news is returned",
+                    @ApiResponse(description = "The list of news headings is returned",
                             responseCode = "200"),
                     @ApiResponse(responseCode = "400",
                             description = "Incorrect request"),
