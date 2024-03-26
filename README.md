@@ -1,3 +1,3 @@
 # rssaggregator
 
-This is an online RSS aggregator based on React (frontend) and Java/Spring (backend).
+This is an online RSS aggregator REST service based on Java/Spring.
