@@ -1,7 +1,10 @@
 package com.egor.rssaggregator.controller;
 
-import com.egor.rssaggregator.dto.TokenDto;
-import com.egor.rssaggregator.dto.UserDto;
+import com.egor.rssaggregator.dto.input.user.LoginDto;
+import com.egor.rssaggregator.dto.input.user.RegDto;
+import com.egor.rssaggregator.dto.output.user.TokenDto;
+import com.egor.rssaggregator.entity.User;
+import com.egor.rssaggregator.mapper.UserMapper;
 import com.egor.rssaggregator.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -18,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 @AllArgsConstructor
 public class UserController {
     private final UserService userService;
+    private final UserMapper userMapper;
 
     @PostMapping("/login")
     @Operation(summary = "Get JWT token by login and password",
@@ -28,8 +32,9 @@ public class UserController {
                             description = "User is not found or incorrect password")
             })
     public TokenDto login(@Parameter(required = true, description = "User data")
-                              @RequestBody @Valid UserDto userDto) {
-        return userService.login(userDto);
+                              @RequestBody @Valid RegDto regDto) {
+        User entity = userMapper.toEntity(regDto);
+        return userService.login(entity);
     }
 
     @PostMapping("/reg")
@@ -41,7 +46,8 @@ public class UserController {
                             description = "Duplicate registration data")
             })
     public void reg(@Parameter(required = true, description = "User data")
-                        @RequestBody @Valid UserDto userDto) {
-        userService.reg(userDto);
+                        @RequestBody @Valid LoginDto loginDto) {
+        User entity = userMapper.toEntity(loginDto);
+        userService.reg(entity);
     }
 }

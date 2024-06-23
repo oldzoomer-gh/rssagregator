@@ -1,7 +1,7 @@
 package com.egor.rssaggregator.service;
 
-import com.egor.rssaggregator.dto.FeedDto;
-import com.egor.rssaggregator.dto.NewsEntryDto;
+import com.egor.rssaggregator.dto.output.feed.NewsEntryDto;
+import com.egor.rssaggregator.entity.Feed;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -14,17 +14,17 @@ import java.util.List;
 public interface FeedService {
     /**
      * Add new feed.
-     * @param feedDto Add feed DTO.
+     * @param feed Add feed DTO.
      * @param email Email of user who added feed.
      */
-    void addFeed(FeedDto feedDto, String email);
+    void addFeed(Feed feed, String email);
 
     /**
      * Get all feeds.
      * @param email Email of user who requested feeds.
      * @return List of feeds.
      */
-    List<FeedDto> getFeeds(String email);
+    List<Feed> getFeeds(String email);
 
     /**
      * Delete feed.

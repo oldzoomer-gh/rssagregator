@@ -1,7 +1,9 @@
 package com.egor.rssaggregator.controller;
 
-import com.egor.rssaggregator.dto.FeedDto;
-import com.egor.rssaggregator.dto.NewsEntryDto;
+import com.egor.rssaggregator.dto.input.feed.FeedInputDto;
+import com.egor.rssaggregator.dto.output.feed.NewsEntryDto;
+import com.egor.rssaggregator.entity.Feed;
+import com.egor.rssaggregator.mapper.FeedMapper;
 import com.egor.rssaggregator.service.FeedService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -22,6 +24,7 @@ import java.util.List;
 @AllArgsConstructor
 public class FeedController {
     private final FeedService feedService;
+    private final FeedMapper feedMapper;
 
     @PostMapping("/add")
     @Operation(summary = "Add new feed",
@@ -34,9 +37,10 @@ public class FeedController {
                             description = "User is not authenticated")
             })
     public void addFeed(@Parameter(description = "Feed data", required = true)
-                            @RequestBody @Valid FeedDto dto,
+                            @RequestBody @Valid FeedInputDto dto,
                         Authentication authentication) {
-        feedService.addFeed(dto, authentication.getName());
+        Feed feed = feedMapper.map(dto);
+        feedService.addFeed(feed, authentication.getName());
     }
 
     @GetMapping("/list")
@@ -47,8 +51,9 @@ public class FeedController {
                     @ApiResponse(responseCode = "403",
                             description = "User is not authenticated")
             })
-    public List<FeedDto> listFeeds(Authentication authentication) {
-        return feedService.getFeeds(authentication.getName());
+    public List<FeedInputDto> listFeeds(Authentication authentication) {
+        List<Feed> feeds = feedService.getFeeds(authentication.getName());
+        return feedMapper.mapToList(feeds);
     }
 
     @DeleteMapping("/delete/{id}")

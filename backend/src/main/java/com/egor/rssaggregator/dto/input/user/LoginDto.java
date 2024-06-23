@@ -1,4 +1,4 @@
-package com.egor.rssaggregator.dto;
+package com.egor.rssaggregator.dto.input.user;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -8,7 +8,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class UserDto {
+public class LoginDto {
     @NotBlank(message = "Email can't be blank")
     @Email(message = "Invalid email")
     @Size(max = 50, message = "Email must be less than 50 characters")

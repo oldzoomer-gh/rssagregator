@@ -1,6 +1,5 @@
 package com.egor.rssaggregator.service.impl;
 
-import com.egor.rssaggregator.dto.UserDto;
 import com.egor.rssaggregator.entity.User;
 import com.egor.rssaggregator.exception.DuplicateUserException;
 import com.egor.rssaggregator.exception.IncorrectPasswordException;
@@ -37,7 +36,7 @@ class UserServiceImplTest {
 
     @Test
     void loginWithExistUser() throws UserNotFoundException, IncorrectPasswordException {
-        var userDto = new UserDto();
+        var userDto = new User();
         userDto.setEmail("1@1.ru");
         userDto.setPassword("test");
 
@@ -52,7 +51,7 @@ class UserServiceImplTest {
 
     @Test
     void loginWithExistUserButWithIncorrectPassword() {
-        var userDto = new UserDto();
+        var userDto = new User();
         userDto.setEmail("1@1.ru");
         userDto.setPassword("test");
 
@@ -67,7 +66,7 @@ class UserServiceImplTest {
 
     @Test
     void loginWithNotExistUser() {
-        var userDto = new UserDto();
+        var userDto = new User();
         userDto.setEmail("1@1.ru");
 
         assertThrows(UserNotFoundException.class, () -> userService.login(userDto));
@@ -75,7 +74,7 @@ class UserServiceImplTest {
 
     @Test
     void registrationWithDuplicatedUser() {
-        var userData = new UserDto();
+        var userData = new User();
         userData.setEmail("1@1.ru");
 
         when(userRepository.existsByEmail(any())).thenReturn(true);
