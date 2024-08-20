@@ -4,7 +4,8 @@ services:
   app:
     image: 'rssaggregator-docker:latest'
     build:
-      context: .
+      context: ../
+      dockerfile: ./docker/Dockerfile
     depends_on:
       - db
     environment:
