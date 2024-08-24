@@ -1,5 +1,3 @@
-version: '3.5'
-
 services:
   app:
     image: 'rssaggregator-docker:latest'
@@ -15,7 +13,7 @@ services:
     ports:
       - "8080:8080"
     networks:
-      - app
+      - rssaggregator
 
   db:
     image: postgres
@@ -27,10 +25,10 @@ services:
     volumes:
       - postgres:/data/postgres
     networks:
-      - app
+      - rssaggregator
 
 networks:
-  app:
+  rssaggregator:
     driver: bridge
 
 volumes:
