@@ -16,7 +16,7 @@ services:
       - rssaggregator
 
   db:
-    image: postgres
+    image: postgres:16-alpine
     environment:
       POSTGRES_USER: user # change to yours
       POSTGRES_PASSWORD: qwerty # change to yours
