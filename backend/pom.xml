@@ -15,7 +15,7 @@
 	<description>Online RSS aggregator based on Java and Spring</description>
 	<properties>
 		<java.version>17</java.version>
-		<mapstruct.version>1.6.0</mapstruct.version>
+		<mapstruct.version>1.6.1</mapstruct.version>
 		<jwt.version>0.12.6</jwt.version>
 	</properties>
 	<dependencies>
