@@ -1,10 +1,6 @@
 package ru.gavrilovegor519.rssaggregator.util;
 
-import com.rometools.rome.feed.synd.SyndFeed;
-import com.rometools.rome.io.FeedException;
-import com.rometools.rome.io.SyndFeedInput;
-import com.rometools.rome.io.XmlReader;
-import ru.gavrilovegor519.rssaggregator.exception.GetFeedException;
+import static java.util.concurrent.TimeUnit.SECONDS;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -15,9 +11,14 @@ import java.net.http.HttpResponse;
 import java.util.concurrent.CompletionException;
 import java.util.concurrent.ExecutionException;
 
-import static java.util.concurrent.TimeUnit.SECONDS;
+import com.rometools.rome.feed.synd.SyndFeed;
+import com.rometools.rome.io.FeedException;
+import com.rometools.rome.io.SyndFeedInput;
+import com.rometools.rome.io.XmlReader;
 
-public class GetFeed {
+import ru.gavrilovegor519.rssaggregator.exception.GetFeedException;
+
+public final class GetFeed {
     /**
      * This is a private constructor,
      * because here has only static methods.
