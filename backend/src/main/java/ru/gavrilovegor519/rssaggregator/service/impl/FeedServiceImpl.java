@@ -66,12 +66,12 @@ public class FeedServiceImpl implements FeedService {
                 .orElseThrow(() -> new UserNotFoundException("User not found!"));
         List<Feed> feeds = user.getFeeds();
 
-        var newsEntries = new ArrayList<NewsEntryDto>();
+        List<NewsEntryDto> newsEntries = new ArrayList<>();
 
         for (Feed feed : feeds) {
             String url = feed.getUrl();
 
-            var news = new ArrayList<>(GetFeed.getFeed(url)
+            List<NewsEntryDto> news = new ArrayList<>(GetFeed.getFeed(url)
                     .getEntries()
                     .stream()
                     .map(entry -> {

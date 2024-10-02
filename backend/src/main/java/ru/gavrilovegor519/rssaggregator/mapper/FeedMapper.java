@@ -11,6 +11,8 @@ import java.util.List;
         unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface FeedMapper {
     Feed map(FeedInputDto feedInputDto);
+
     FeedInputDto map(Feed feed);
+
     List<FeedInputDto> mapToList(List<Feed> feeds);
 }

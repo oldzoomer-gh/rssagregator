@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
@@ -29,14 +30,14 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                                     @NonNull FilterChain filterChain)
             throws ServletException, IOException {
 
-        var token = jwtUtilities.getToken(request);
+        String token = jwtUtilities.getToken(request);
 
         if (token != null && jwtUtilities.validateToken(token)) {
             String username = jwtUtilities.extractUsername(token);
 
             UserDetails userDetails = userDetailsService.loadUserByUsername(username);
             if (userDetails != null) {
-                var authentication = new UsernamePasswordAuthenticationToken(
+                Authentication authentication = new UsernamePasswordAuthenticationToken(
                         userDetails.getUsername(), null,
                         userDetails.getAuthorities());
                 log.info("Authenticated user with username: {}", username);

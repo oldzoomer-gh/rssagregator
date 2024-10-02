@@ -7,6 +7,7 @@ import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -85,7 +86,7 @@ public class FeedController {
                                                   @RequestParam(defaultValue = "0") int page,
                                                   @Parameter(description = "Page size", required = true)
                                                   @RequestParam(defaultValue = "10") int size) {
-        var pageable = PageRequest.of(page, size);
+        Pageable pageable = PageRequest.of(page, size);
         return feedService.getNewsHeadings(authentication.getName(), pageable);
     }
 }

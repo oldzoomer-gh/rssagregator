@@ -1,6 +1,10 @@
 package ru.gavrilovegor519.rssaggregator.util;
 
-import static java.util.concurrent.TimeUnit.SECONDS;
+import com.rometools.rome.feed.synd.SyndFeed;
+import com.rometools.rome.io.FeedException;
+import com.rometools.rome.io.SyndFeedInput;
+import com.rometools.rome.io.XmlReader;
+import ru.gavrilovegor519.rssaggregator.exception.GetFeedException;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -8,15 +12,11 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
 import java.util.concurrent.ExecutionException;
 
-import com.rometools.rome.feed.synd.SyndFeed;
-import com.rometools.rome.io.FeedException;
-import com.rometools.rome.io.SyndFeedInput;
-import com.rometools.rome.io.XmlReader;
-
-import ru.gavrilovegor519.rssaggregator.exception.GetFeedException;
+import static java.util.concurrent.TimeUnit.SECONDS;
 
 public final class GetFeed {
     /**
@@ -31,14 +31,13 @@ public final class GetFeed {
      * @return Feed representation
      */
     public static SyndFeed getFeed(String feedUrl) {
-        HttpClient client = HttpClient.newHttpClient();
-        HttpRequest request = HttpRequest.newBuilder().uri(URI.create(feedUrl)).build();
-        var feed = client
-                .sendAsync(request, HttpResponse.BodyHandlers.ofInputStream())
-                .thenApply(HttpResponse::body)
-                .thenApply(GetFeed::bodyToFeed)
-                .orTimeout(5, SECONDS);
-        try {
+        try (HttpClient client = HttpClient.newHttpClient()) {
+            HttpRequest request = HttpRequest.newBuilder().uri(URI.create(feedUrl)).build();
+            CompletableFuture<SyndFeed> feed = client
+                    .sendAsync(request, HttpResponse.BodyHandlers.ofInputStream())
+                    .thenApply(HttpResponse::body)
+                    .thenApply(GetFeed::bodyToFeed)
+                    .orTimeout(5, SECONDS);
             return feed.get();
         } catch (InterruptedException | ExecutionException e) {
             throw new GetFeedException("Can't get feed");
