@@ -1,7 +1,7 @@
 FROM maven:3.9-eclipse-temurin-17-alpine AS builder
 
-COPY backend/src /usr/src/app/src
-COPY backend/pom.xml /usr/src/app
+COPY src /usr/src/app/src
+COPY pom.xml /usr/src/app
 
 RUN mvn -f /usr/src/app/pom.xml clean package
 
