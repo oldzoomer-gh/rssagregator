@@ -1,9 +1,5 @@
 package ru.gavrilovegor519.rssaggregator.exception;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.ResponseStatus;
-
-@ResponseStatus(value = HttpStatus.FORBIDDEN, reason = "User not found!") // 403
 public class UserNotFoundException extends RuntimeException {
     public UserNotFoundException() {
         super();

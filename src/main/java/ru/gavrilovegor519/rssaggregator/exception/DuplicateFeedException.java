@@ -1,9 +1,5 @@
 package ru.gavrilovegor519.rssaggregator.exception;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.ResponseStatus;
-
-@ResponseStatus(value = HttpStatus.CONFLICT, reason = "Duplicate feed!") // 409
 public class DuplicateFeedException extends RuntimeException {
     public DuplicateFeedException() {
         super();
