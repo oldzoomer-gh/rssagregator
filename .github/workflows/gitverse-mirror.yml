@@ -9,6 +9,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: git clone --bare "https://github.com/$GITHUB_REPOSITORY" .
-      - run: git push --mirror "https://gavrilovegor519:$GITVERSE_TOKEN@gitverse.ru/gavrilovegor519/rssaggregator.git"
+      - run: git push --mirror "https://gavrilovegor519:$GITVERSE_TOKEN@gitverse.ru/$GITHUB_REPOSITORY.git"
         env:
           GITVERSE_TOKEN: ${{ secrets.GITVERSE_TOKEN }}
