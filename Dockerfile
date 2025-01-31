@@ -1,10 +1,46 @@
-FROM maven:3.9-eclipse-temurin-21-alpine AS builder
+#
+# Set a variable that can be used in all stages.
+#
+ARG BUILD_HOME=/build
 
-COPY src /usr/src/app/src
-COPY pom.xml /usr/src/app
+#
+# Gradle image for the build stage.
+#
+FROM gradle:jdk21-alpine as build-image
 
-RUN mvn -f /usr/src/app/pom.xml clean package
+#
+# Set the working directory.
+#
+ARG BUILD_HOME
+ENV APP_HOME=$BUILD_HOME
+WORKDIR $APP_HOME
 
+#
+# Copy the Gradle config, source code, and static analysis config
+# into the build container.
+#
+COPY --chown=gradle:gradle build.gradle settings.gradle $APP_HOME/
+COPY --chown=gradle:gradle src $APP_HOME/src
+COPY --chown=gradle:gradle config $APP_HOME/config
+
+#
+# Build the application.
+#
+RUN gradle --no-daemon build
+
+#
+# Java image for the application to run in.
+#
 FROM eclipse-temurin:21-jre-alpine
-COPY --from=builder /usr/src/app/target/rssaggregator-0.0.1-SNAPSHOT.jar application.jar
-ENTRYPOINT ["java", "-jar", "application.jar"]
+
+#
+# Copy the jar file in and name it app.jar.
+#
+ARG BUILD_HOME
+ENV APP_HOME=$BUILD_HOME
+COPY --from=build-image $APP_HOME/build/libs/gradle-docker-example.jar app.jar
+
+#
+# The command to run when the container starts.
+#
+ENTRYPOINT java -jar app.jar
