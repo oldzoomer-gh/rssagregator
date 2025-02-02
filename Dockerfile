@@ -42,4 +42,4 @@ COPY --from=build-image $APP_HOME/build/libs/gradle-docker-example.jar app.jar
 #
 # The command to run when the container starts.
 #
-ENTRYPOINT java -jar app.jar
+CMD java -jar app.jar
