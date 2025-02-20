@@ -32,8 +32,8 @@ public class UserController {
                             description = "User is not found or incorrect password")
             })
     public TokenDto login(@Parameter(required = true, description = "User data")
-                              @RequestBody @Valid RegDto regDto) {
-        User entity = userMapper.toEntity(regDto);
+                              @RequestBody @Valid LoginDto loginDto) {
+        User entity = userMapper.toEntity(loginDto);
         return userService.login(entity);
     }
 
@@ -46,8 +46,8 @@ public class UserController {
                             description = "Duplicate registration data")
             })
     public void reg(@Parameter(required = true, description = "User data")
-                        @RequestBody @Valid LoginDto loginDto) {
-        User entity = userMapper.toEntity(loginDto);
+                        @RequestBody @Valid RegDto regDto) {
+        User entity = userMapper.toEntity(regDto);
         userService.reg(entity);
     }
 }
