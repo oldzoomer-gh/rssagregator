@@ -19,6 +19,8 @@ import ru.gavrilovegor519.rssaggregator.util.GetFeed;
 
 import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 
 @Service
@@ -66,31 +68,27 @@ public class FeedServiceImpl implements FeedService {
                 .orElseThrow(() -> new UserNotFoundException("User not found!"));
         List<Feed> feeds = user.getFeeds();
 
-        List<NewsEntryDto> newsEntries = new ArrayList<>();
+        List<NewsEntryDto> newsEntries = new LinkedList<>();
 
-        for (Feed feed : feeds) {
-            String url = feed.getUrl();
+        feeds.stream()
+                .map(Feed::getUrl)
+                .forEach(url -> newsEntries.addAll(new ArrayList<>(GetFeed.getFeed(url)
+                        .getEntries()
+                        .stream()
+                        .map(entry -> {
+                            String title = entry.getTitle();
+                            String link = entry.getLink();
+                            Date date = entry.getPublishedDate();
 
-            List<NewsEntryDto> news = new ArrayList<>(GetFeed.getFeed(url)
-                    .getEntries()
-                    .stream()
-                    .map(entry -> {
-                        var title = entry.getTitle();
-                        var link = entry.getLink();
-                        var date = entry.getPublishedDate();
+                            NewsEntryDto mainNewsEntry = new NewsEntryDto();
+                            mainNewsEntry.setNewsHead(title);
+                            mainNewsEntry.setFeedUrl(link);
+                            mainNewsEntry.setNewsDate(date.toInstant().
+                                    atZone(ZoneId.systemDefault())
+                                    .toLocalDateTime());
 
-                        var mainNewsEntry = new NewsEntryDto();
-                        mainNewsEntry.setNewsHead(title);
-                        mainNewsEntry.setFeedUrl(link);
-                        mainNewsEntry.setNewsDate(date.toInstant().
-                                atZone(ZoneId.systemDefault())
-                                .toLocalDateTime());
-
-                        return mainNewsEntry;
-                    }).toList());
-
-            newsEntries.addAll(news);
-        }
+                            return mainNewsEntry;
+                        }).toList())));
 
         newsEntries.sort((x, y) -> y.getNewsDate().compareTo(x.getNewsDate()));
 
