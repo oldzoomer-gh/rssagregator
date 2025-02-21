@@ -37,7 +37,7 @@ FROM eclipse-temurin:21-jre-alpine
 #
 ARG BUILD_HOME
 ENV APP_HOME=$BUILD_HOME
-COPY --from=build-image $APP_HOME/build/libs/gradle-docker-example.jar app.jar
+COPY --from=build-image $APP_HOME/build/libs/rssaggregator-0.0.1-SNAPSHOT.jar app.jar
 
 #
 # The command to run when the container starts.
