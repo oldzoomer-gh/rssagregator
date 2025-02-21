@@ -1,33 +1,33 @@
 services:
   app:
-    image: 'rssaggregator-docker:latest'
+    image: 'rssagregator-docker:latest'
     build:
       context: .
     depends_on:
       - db
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/rssaggregator
-      - SPRING_DATASOURCE_USERNAME=user # change to yours
-      - SPRING_DATASOURCE_PASSWORD=qwerty # change to yours
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/rssagregator
+      - SPRING_DATASOURCE_USERNAME=${SPRING_DATASOURCE_USERNAME}
+      - SPRING_DATASOURCE_PASSWORD=${SPRING_DATASOURCE_PASSWORD}
     ports:
       - "8080:8080"
     networks:
-      - rssaggregator
+      - rssagregator
 
   db:
     image: postgres:16-alpine
     environment:
-      POSTGRES_USER: user # change to yours
-      POSTGRES_PASSWORD: qwerty # change to yours
-      PGDATA: /data/postgres
-      POSTGRES_DB: rssaggregator
+      - POSTGRES_USER=${SPRING_DATASOURCE_USERNAME}
+      - POSTGRES_PASSWORD=${SPRING_DATASOURCE_PASSWORD}
+      - PGDATA=/data/postgres
+      - POSTGRES_DB=rssagregator
     volumes:
       - postgres:/data/postgres
     networks:
-      - rssaggregator
+      - rssagregator
 
 networks:
-  rssaggregator:
+  rssagregator:
     driver: bridge
 
 volumes:
