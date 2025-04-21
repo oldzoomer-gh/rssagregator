@@ -4,7 +4,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import ru.gavrilovegor519.rssaggregator.entity.User;
@@ -28,57 +27,43 @@ class UserServiceImplTest {
     @Mock
     private UserRepo userRepository;
 
-    @Spy
-    private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+    @Mock
+    private BCryptPasswordEncoder passwordEncoder;
 
     @InjectMocks
     private UserServiceImpl userService;
 
+    @Mock
+    private User loginDto;
+
+    @Mock
+    private User user;
+
     @Test
     void loginWithExistUser() throws UserNotFoundException, IncorrectPasswordException {
-        var userDto = new User();
-        userDto.setEmail("1@1.ru");
-        userDto.setPassword("test");
+        when(passwordEncoder.matches(any(), any())).thenReturn(true);
+        when(userRepository.findByEmail(any())).thenReturn(Optional.of(user));
 
-        var user = new User();
-        user.setEmail(userDto.getEmail());
-        user.setPassword(passwordEncoder.encode(userDto.getPassword()));
-
-        when(userRepository.findByEmail("1@1.ru")).thenReturn(Optional.of(user));
-
-        userService.login(userDto);
+        userService.login(loginDto);
     }
 
     @Test
     void loginWithExistUserButWithIncorrectPassword() {
-        var userDto = new User();
-        userDto.setEmail("1@1.ru");
-        userDto.setPassword("test");
+        when(passwordEncoder.matches(any(), any())).thenReturn(false);
+        when(userRepository.findByEmail(any())).thenReturn(Optional.of(user));
 
-        var user = new User();
-        user.setEmail(userDto.getEmail());
-        user.setPassword(passwordEncoder.encode("test2"));
-
-        when(userRepository.findByEmail("1@1.ru")).thenReturn(Optional.of(user));
-
-        assertThrows(IncorrectPasswordException.class, () -> userService.login(userDto));
+        assertThrows(IncorrectPasswordException.class, () -> userService.login(loginDto));
     }
 
     @Test
     void loginWithNotExistUser() {
-        var userDto = new User();
-        userDto.setEmail("1@1.ru");
-
-        assertThrows(UserNotFoundException.class, () -> userService.login(userDto));
+        assertThrows(UserNotFoundException.class, () -> userService.login(loginDto));
     }
 
     @Test
     void registrationWithDuplicatedUser() {
-        var userData = new User();
-        userData.setEmail("1@1.ru");
-
         when(userRepository.existsByEmail(any())).thenReturn(true);
 
-        assertThrows(DuplicateUserException.class, () -> userService.reg(userData));
+        assertThrows(DuplicateUserException.class, () -> userService.reg(loginDto));
     }
 }
