@@ -17,6 +17,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -33,14 +34,11 @@ class UserServiceImplTest {
     @InjectMocks
     private UserServiceImpl userService;
 
-    @Mock
-    private User loginDto;
-
-    @Mock
-    private User user;
-
     @Test
     void loginWithExistUser() throws UserNotFoundException, IncorrectPasswordException {
+        User user = mock(User.class);
+        User loginDto = mock(User.class);
+
         when(passwordEncoder.matches(any(), any())).thenReturn(true);
         when(userRepository.findByEmail(any())).thenReturn(Optional.of(user));
 
@@ -49,6 +47,9 @@ class UserServiceImplTest {
 
     @Test
     void loginWithExistUserButWithIncorrectPassword() {
+        User user = mock(User.class);
+        User loginDto = mock(User.class);
+
         when(passwordEncoder.matches(any(), any())).thenReturn(false);
         when(userRepository.findByEmail(any())).thenReturn(Optional.of(user));
 
@@ -57,11 +58,15 @@ class UserServiceImplTest {
 
     @Test
     void loginWithNotExistUser() {
+        User loginDto = mock(User.class);
+
         assertThrows(UserNotFoundException.class, () -> userService.login(loginDto));
     }
 
     @Test
     void registrationWithDuplicatedUser() {
+        User loginDto = mock(User.class);
+
         when(userRepository.existsByEmail(any())).thenReturn(true);
 
         assertThrows(DuplicateUserException.class, () -> userService.reg(loginDto));
