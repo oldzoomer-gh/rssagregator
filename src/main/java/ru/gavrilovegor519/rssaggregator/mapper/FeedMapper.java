@@ -3,6 +3,7 @@ package ru.gavrilovegor519.rssaggregator.mapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 import ru.gavrilovegor519.rssaggregator.dto.input.feed.FeedInputDto;
+import ru.gavrilovegor519.rssaggregator.dto.output.feed.FeedOutputDto;
 import ru.gavrilovegor519.rssaggregator.entity.Feed;
 
 import java.util.List;
@@ -12,7 +13,7 @@ import java.util.List;
 public interface FeedMapper {
     Feed map(FeedInputDto feedInputDto);
 
-    FeedInputDto map(Feed feed);
+    List<FeedOutputDto> mapOutputToList(List<Feed> feeds);
 
-    List<FeedInputDto> mapToList(List<Feed> feeds);
+    FeedOutputDto mapOutput(Feed feed);
 }

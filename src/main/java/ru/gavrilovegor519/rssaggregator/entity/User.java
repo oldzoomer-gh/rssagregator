@@ -13,6 +13,7 @@ import java.util.*;
 @Table(name = "users")
 @Getter
 @Setter
+@NamedEntityGraph(name = "User.feeds", attributeNodes = @NamedAttributeNode("feeds"))
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,12 +26,12 @@ public class User implements UserDetails {
     @Column(name = "password", length = 120, nullable = false)
     private String password;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany
     private List<Feed> feeds = new ArrayList<>();
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        var userRole = new HashSet<SimpleGrantedAuthority>();
+        Set<SimpleGrantedAuthority> userRole = new HashSet<>();
         userRole.add(new SimpleGrantedAuthority("ROLE_USER")); // all users are users, not admins
         return userRole;
     }

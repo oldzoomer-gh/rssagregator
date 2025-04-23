@@ -10,7 +10,7 @@ import ru.gavrilovegor519.rssaggregator.dto.output.feed.NewsEntryDto;
 import ru.gavrilovegor519.rssaggregator.entity.Feed;
 import ru.gavrilovegor519.rssaggregator.entity.User;
 import ru.gavrilovegor519.rssaggregator.exception.DuplicateFeedException;
-import ru.gavrilovegor519.rssaggregator.exception.IncorrectInputDataException;
+import ru.gavrilovegor519.rssaggregator.exception.FeedNotFoundException;
 import ru.gavrilovegor519.rssaggregator.exception.UserNotFoundException;
 import ru.gavrilovegor519.rssaggregator.repo.FeedRepo;
 import ru.gavrilovegor519.rssaggregator.repo.UserRepo;
@@ -30,7 +30,7 @@ public class FeedServiceImpl implements FeedService {
     private final FeedRepo feedRepo;
 
     @Override
-    public void addFeed(Feed feed, String email) {
+    public Feed addFeed(Feed feed, String email) {
         User user = userRepo.findByEmail(email)
                 .orElseThrow(() -> new UserNotFoundException("User not found!"));
 
@@ -39,8 +39,12 @@ public class FeedServiceImpl implements FeedService {
             throw new DuplicateFeedException("Feed already exists!");
         }
 
-        feed.setUser(user);
-        feedRepo.save(feed);
+        Feed feed2 = feedRepo.save(feed);
+
+        user.getFeeds().add(feed2);
+        userRepo.save(user);
+
+        return feed2;
     }
 
     @Override
@@ -56,6 +60,11 @@ public class FeedServiceImpl implements FeedService {
         User user = userRepo.findByEmail(email)
                 .orElseThrow(() -> new UserNotFoundException("User not found!"));
 
+        if (user.getFeeds().stream().noneMatch(feed -> feed.getId() == id)) {
+            throw new FeedNotFoundException("Feed not found!");
+        }
+
+        feedRepo.deleteById(id);
         user.getFeeds().removeIf(feed -> feed.getId() == id);
 
         userRepo.save(user);
@@ -93,11 +102,6 @@ public class FeedServiceImpl implements FeedService {
         newsEntries.sort((x, y) -> y.getNewsDate().compareTo(x.getNewsDate()));
 
         int start = (int) pageable.getOffset();
-
-        if (start > newsEntries.size()) {
-            throw new IncorrectInputDataException("Incorrect page number!");
-        }
-
         int end = Math.min(start + pageable.getPageSize(), newsEntries.size());
         return new PageImpl<>(newsEntries.subList(start, end), pageable, newsEntries.size());
     }

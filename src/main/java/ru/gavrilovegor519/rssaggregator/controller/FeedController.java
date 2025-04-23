@@ -12,6 +12,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import ru.gavrilovegor519.rssaggregator.dto.input.feed.FeedInputDto;
+import ru.gavrilovegor519.rssaggregator.dto.output.feed.FeedOutputDto;
 import ru.gavrilovegor519.rssaggregator.dto.output.feed.NewsEntryDto;
 import ru.gavrilovegor519.rssaggregator.entity.Feed;
 import ru.gavrilovegor519.rssaggregator.mapper.FeedMapper;
@@ -37,11 +38,11 @@ public class FeedController {
                     @ApiResponse(responseCode = "403",
                             description = "User is not authenticated")
             })
-    public void addFeed(@Parameter(description = "Feed data", required = true)
+    public FeedOutputDto addFeed(@Parameter(description = "Feed data", required = true)
                             @RequestBody @Valid FeedInputDto dto,
                         Authentication authentication) {
         Feed feed = feedMapper.map(dto);
-        feedService.addFeed(feed, authentication.getName());
+        return feedMapper.mapOutput(feedService.addFeed(feed, authentication.getName()));
     }
 
     @GetMapping("/list")
@@ -52,9 +53,9 @@ public class FeedController {
                     @ApiResponse(responseCode = "403",
                             description = "User is not authenticated")
             })
-    public List<FeedInputDto> listFeeds(Authentication authentication) {
+    public List<FeedOutputDto> listFeeds(Authentication authentication) {
         List<Feed> feeds = feedService.getFeeds(authentication.getName());
-        return feedMapper.mapToList(feeds);
+        return feedMapper.mapOutputToList(feeds);
     }
 
     @DeleteMapping("/delete/{id}")

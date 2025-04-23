@@ -19,12 +19,8 @@ public class Feed {
     @Column(name = "name", unique = true, length = 50, nullable = false)
     private String name;
 
-    @Column(name = "url", unique = true, length = 250, nullable = false)
+    @Column(name = "url", unique = true, nullable = false)
     private String url;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private User user;
 
     @Override
     public boolean equals(Object o) {

@@ -14,10 +14,12 @@ import java.util.List;
 public interface FeedService {
     /**
      * Add new feed.
-     * @param feed Add feed DTO.
+     *
+     * @param feed  Add feed DTO.
      * @param email Email of user who added feed.
+     * @return
      */
-    void addFeed(Feed feed, String email);
+    Feed addFeed(Feed feed, String email);
 
     /**
      * Get all feeds.
