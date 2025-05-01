@@ -2,6 +2,7 @@ package ru.gavrilovegor519.rssaggregator.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -11,20 +12,17 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-import org.springframework.transaction.annotation.Transactional;
 import ru.gavrilovegor519.rssaggregator.config.TestContainersConfig;
 import ru.gavrilovegor519.rssaggregator.dto.input.user.LoginDto;
 import ru.gavrilovegor519.rssaggregator.dto.input.user.RegDto;
 import ru.gavrilovegor519.rssaggregator.entity.User;
 import ru.gavrilovegor519.rssaggregator.repo.UserRepo;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-@Transactional
 public class UserControllerIntegrationTest extends TestContainersConfig {
 
     @Autowired
@@ -39,15 +37,21 @@ public class UserControllerIntegrationTest extends TestContainersConfig {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @BeforeEach
+    void setupTest() {
+        User user = new User();
+        user.setEmail("test@example.com");
+        user.setPassword(passwordEncoder.encode("password"));
+        userRepository.save(user);
+    }
+
     @AfterEach
-    public void tearDown() {
+    void tearDown() {
         userRepository.deleteAll();
     }
 
     @Test
-    public void testLogin() throws Exception {
-        createUser("test@example.com", "password");
-
+    void testLogin() throws Exception {
         LoginDto loginDto = new LoginDto();
         loginDto.setEmail("test@example.com");
         loginDto.setPassword("password");
@@ -60,9 +64,7 @@ public class UserControllerIntegrationTest extends TestContainersConfig {
     }
 
     @Test
-    public void testLoginWithInvalidCredentials() throws Exception {
-        createUser("test@example.com", "password");
-
+    void testLoginWithInvalidCredentials() throws Exception {
         LoginDto loginDto = new LoginDto();
         loginDto.setEmail("test@example.com");
         loginDto.setPassword("wrongpassword");
@@ -74,7 +76,7 @@ public class UserControllerIntegrationTest extends TestContainersConfig {
     }
 
     @Test
-    public void testRegistration() throws Exception {
+    void testRegistration() throws Exception {
         RegDto regDto = new RegDto();
         regDto.setEmail("newuser@example.com");
         regDto.setPassword("newpassword");
@@ -85,14 +87,12 @@ public class UserControllerIntegrationTest extends TestContainersConfig {
                 .andExpect(status().isOk());
 
         User user = userRepository.findByEmail("newuser@example.com").orElse(null);
-        assertTrue(user != null);
+        assertNotNull(user);
         assertEquals("newuser@example.com", user.getEmail());
     }
 
     @Test
-    public void testRegistrationWithDuplicateEmail() throws Exception {
-        createUser("test@example.com", "password");
-
+    void testRegistrationWithDuplicateEmail() throws Exception {
         RegDto regDto = new RegDto();
         regDto.setEmail("test@example.com");
         regDto.setPassword("newpassword");
@@ -101,12 +101,5 @@ public class UserControllerIntegrationTest extends TestContainersConfig {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(regDto)))
                 .andExpect(status().isConflict());
-    }
-
-    private User createUser(String email, String password) {
-        User user = new User();
-        user.setEmail(email);
-        user.setPassword(passwordEncoder.encode(password));
-        return userRepository.save(user);
     }
 }

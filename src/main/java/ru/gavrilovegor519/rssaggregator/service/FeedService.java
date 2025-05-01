@@ -5,7 +5,7 @@ import org.springframework.data.domain.Pageable;
 import ru.gavrilovegor519.rssaggregator.dto.output.feed.NewsEntryDto;
 import ru.gavrilovegor519.rssaggregator.entity.Feed;
 
-import java.util.List;
+import java.util.Set;
 
 /**
  * Management of feeds service layer.
@@ -24,9 +24,9 @@ public interface FeedService {
     /**
      * Get all feeds.
      * @param email Email of user who requested feeds.
-     * @return List of feeds.
+     * @return Set of feeds.
      */
-    List<Feed> getFeeds(String email);
+    Set<Feed> getFeeds(String email);
 
     /**
      * Delete feed.

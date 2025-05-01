@@ -18,7 +18,7 @@ import ru.gavrilovegor519.rssaggregator.entity.Feed;
 import ru.gavrilovegor519.rssaggregator.mapper.FeedMapper;
 import ru.gavrilovegor519.rssaggregator.service.FeedService;
 
-import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/api/1.0/feed")
@@ -53,8 +53,8 @@ public class FeedController {
                     @ApiResponse(responseCode = "403",
                             description = "User is not authenticated")
             })
-    public List<FeedOutputDto> listFeeds(Authentication authentication) {
-        List<Feed> feeds = feedService.getFeeds(authentication.getName());
+    public Set<FeedOutputDto> listFeeds(Authentication authentication) {
+        Set<Feed> feeds = feedService.getFeeds(authentication.getName());
         return feedMapper.mapOutputToList(feeds);
     }
 

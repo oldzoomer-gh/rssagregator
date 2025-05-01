@@ -7,7 +7,10 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "users")
@@ -26,8 +29,9 @@ public class User implements UserDetails {
     @Column(name = "password", length = 120, nullable = false)
     private String password;
 
-    @OneToMany
-    private List<Feed> feeds = new ArrayList<>();
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "feeds_id")
+    private Set<Feed> feeds = new HashSet<>();
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -39,6 +43,14 @@ public class User implements UserDetails {
     @Override
     public String getUsername() {
         return email;
+    }
+
+    public void addFeed(Feed feed) {
+        feeds.add(feed);
+    }
+
+    public void removeFeed(Feed feed) {
+        feeds.remove(feed);
     }
 
     @Override

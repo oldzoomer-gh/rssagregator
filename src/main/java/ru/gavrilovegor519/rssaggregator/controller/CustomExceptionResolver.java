@@ -15,28 +15,33 @@ public class CustomExceptionResolver {
     @ExceptionHandler(IncorrectInputDataException.class)
     public ResponseEntity<Response> badRequestHandler(Throwable e) {
         log.error(e.getMessage());
-        Response response = new Response(HttpStatus.BAD_REQUEST.getReasonPhrase());
+        Response response = new Response(e.getMessage());
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(GetFeedException.class)
+    public ResponseEntity<String> getFeedError(Throwable e) {
+        return ResponseEntity.ok(e.getMessage());
     }
 
     @ExceptionHandler({DuplicateUserException.class, DuplicateFeedException.class})
     public ResponseEntity<Response> conflictHandler(Throwable e) {
         log.error(e.getMessage());
-        Response response = new Response(HttpStatus.CONFLICT.getReasonPhrase());
+        Response response = new Response(e.getMessage());
         return new ResponseEntity<>(response, HttpStatus.CONFLICT);
     }
 
     @ExceptionHandler({IncorrectPasswordException.class, UserNotFoundException.class})
     public ResponseEntity<Response> forbiddenHandler(Throwable e) {
         log.error(e.getMessage());
-        Response response = new Response(HttpStatus.FORBIDDEN.getReasonPhrase());
+        Response response = new Response(e.getMessage());
         return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
     }
 
     @ExceptionHandler(Throwable.class)
     public ResponseEntity<Response> otherHandler(Throwable e) {
         log.error(e.getMessage());
-        Response response = new Response(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase());
+        Response response = new Response(e.getMessage());
         return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 

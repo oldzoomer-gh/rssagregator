@@ -3,6 +3,7 @@ package ru.gavrilovegor519.rssaggregator.service.impl;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.gavrilovegor519.rssaggregator.dto.output.user.TokenDto;
 import ru.gavrilovegor519.rssaggregator.entity.User;
 import ru.gavrilovegor519.rssaggregator.exception.DuplicateUserException;
@@ -20,6 +21,7 @@ public class UserServiceImpl implements UserService {
     private final BCryptPasswordEncoder passwordEncoder;
 
     @Override
+    @Transactional(readOnly = true)
     public TokenDto login(User user) {
         String email = user.getEmail();
         String password = user.getPassword();
@@ -36,6 +38,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public void reg(User user) {
         boolean emailIsExist =
                 userRepository.existsByEmail(user.getEmail());
