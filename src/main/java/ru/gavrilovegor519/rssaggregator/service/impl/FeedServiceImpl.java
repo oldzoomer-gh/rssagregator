@@ -19,7 +19,10 @@ import ru.gavrilovegor519.rssaggregator.service.FeedService;
 import ru.gavrilovegor519.rssaggregator.util.GetFeed;
 
 import java.time.ZoneId;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
 
 @Service
 @AllArgsConstructor
@@ -45,7 +48,7 @@ public class FeedServiceImpl implements FeedService {
 
     @Override
     @Transactional(readOnly = true)
-    public Set<Feed> getFeeds(String email) {
+    public List<Feed> getFeeds(String email) {
         User user = userRepo.findByEmail(email)
                 .orElseThrow(() -> new UserNotFoundException("User not found!"));
 
@@ -72,7 +75,7 @@ public class FeedServiceImpl implements FeedService {
     public Page<NewsEntryDto> getNewsHeadings(String email, Pageable pageable) {
         User user = userRepo.findByEmail(email)
                 .orElseThrow(() -> new UserNotFoundException("User not found!"));
-        Set<Feed> feeds = user.getFeeds();
+        List<Feed> feeds = user.getFeeds();
 
         List<NewsEntryDto> newsEntries = new LinkedList<>();
 
