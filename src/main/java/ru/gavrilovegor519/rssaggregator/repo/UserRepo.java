@@ -7,7 +7,7 @@ import ru.gavrilovegor519.rssaggregator.entity.User;
 import java.util.Optional;
 
 public interface UserRepo extends JpaRepository<User, Long> {
-    @EntityGraph("User.feeds")
+    @EntityGraph(attributePaths = "feeds")
     Optional<User> findByEmail(String email);
 
     boolean existsByEmail(String email);

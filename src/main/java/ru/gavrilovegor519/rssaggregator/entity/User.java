@@ -1,6 +1,7 @@
 package ru.gavrilovegor519.rssaggregator.entity;
 
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
@@ -16,7 +17,6 @@ import java.util.Set;
 @Table(name = "users")
 @Getter
 @Setter
-@NamedEntityGraph(name = "User.feeds", attributeNodes = @NamedAttributeNode("feeds"))
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,6 +30,7 @@ public class User implements UserDetails {
     private String password;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @Setter(AccessLevel.PRIVATE)
     private Set<Feed> feeds = new HashSet<>();
 
     @Override
