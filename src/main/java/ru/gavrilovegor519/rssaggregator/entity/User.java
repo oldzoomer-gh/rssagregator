@@ -29,8 +29,7 @@ public class User implements UserDetails {
     @Column(name = "password", length = 120, nullable = false)
     private String password;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "feeds_id")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private Set<Feed> feeds = new HashSet<>();
 
     @Override
@@ -47,10 +46,12 @@ public class User implements UserDetails {
 
     public void addFeed(Feed feed) {
         feeds.add(feed);
+        feed.setUser(this);
     }
 
     public void removeFeed(Feed feed) {
         feeds.remove(feed);
+        feed.setUser(null);
     }
 
     @Override

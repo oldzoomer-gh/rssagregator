@@ -17,7 +17,7 @@ public interface FeedService {
      *
      * @param feed  Add feed DTO.
      * @param email Email of user who added feed.
-     * @return
+     * @return Feed information
      */
     Feed addFeed(Feed feed, String email);
 

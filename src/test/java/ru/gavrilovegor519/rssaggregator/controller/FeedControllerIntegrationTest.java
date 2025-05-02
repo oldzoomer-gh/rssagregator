@@ -21,12 +21,12 @@ import ru.gavrilovegor519.rssaggregator.exception.UserNotFoundException;
 import ru.gavrilovegor519.rssaggregator.repo.FeedRepo;
 import ru.gavrilovegor519.rssaggregator.repo.UserRepo;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
-@AutoConfigureMockMvc
+@AutoConfigureMockMvc(printOnlyOnFailure = false)
 public class FeedControllerIntegrationTest extends TestContainersConfig {
 
     @Autowired

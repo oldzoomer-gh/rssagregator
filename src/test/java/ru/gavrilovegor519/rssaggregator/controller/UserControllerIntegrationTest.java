@@ -18,11 +18,12 @@ import ru.gavrilovegor519.rssaggregator.dto.input.user.RegDto;
 import ru.gavrilovegor519.rssaggregator.entity.User;
 import ru.gavrilovegor519.rssaggregator.repo.UserRepo;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
-@AutoConfigureMockMvc
+@AutoConfigureMockMvc(printOnlyOnFailure = false)
 public class UserControllerIntegrationTest extends TestContainersConfig {
 
     @Autowired

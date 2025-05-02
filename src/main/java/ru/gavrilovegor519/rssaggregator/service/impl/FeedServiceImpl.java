@@ -14,7 +14,6 @@ import ru.gavrilovegor519.rssaggregator.exception.DuplicateFeedException;
 import ru.gavrilovegor519.rssaggregator.exception.FeedNotFoundException;
 import ru.gavrilovegor519.rssaggregator.exception.IncorrectInputDataException;
 import ru.gavrilovegor519.rssaggregator.exception.UserNotFoundException;
-import ru.gavrilovegor519.rssaggregator.repo.FeedRepo;
 import ru.gavrilovegor519.rssaggregator.repo.UserRepo;
 import ru.gavrilovegor519.rssaggregator.service.FeedService;
 import ru.gavrilovegor519.rssaggregator.util.GetFeed;
@@ -27,7 +26,6 @@ import java.util.*;
 @Transactional
 public class FeedServiceImpl implements FeedService {
     private final UserRepo userRepo;
-    private final FeedRepo feedRepo;
 
     @Override
     @Transactional
@@ -41,7 +39,6 @@ public class FeedServiceImpl implements FeedService {
         }
 
         user.addFeed(feed);
-        userRepo.flush();
 
         return feed;
     }
